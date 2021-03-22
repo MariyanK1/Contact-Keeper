@@ -5,9 +5,21 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
+const auth = require("../middleware/auth");
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 router.post(
   "/",
+  auth,
   [
     check("email", "Please include a valid email").isEmail(),
     check("password", "Password is required").exists(),
