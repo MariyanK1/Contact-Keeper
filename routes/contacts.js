@@ -90,7 +90,6 @@ router.put("/:id", auth, async (req, res) => {
 });
 
 router.delete("/:id", auth, async (req, res) => {
-  //  TODOOO
   try {
     let contact = await Contact.findById(req.params.id);
 
